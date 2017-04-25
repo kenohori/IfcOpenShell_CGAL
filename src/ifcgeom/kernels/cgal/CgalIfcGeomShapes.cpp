@@ -295,11 +295,6 @@ bool IfcGeom::CgalKernel::convert(const IfcSchema::IfcConnectedFaceSet* l, cgal_
       continue;
     }
     
-    //    std::cout << "Face in ConnectedFaceSet: " << std::endl;
-    //    for (auto &point: face.outer) {
-    //      std::cout << "\tPoint(" << point << ")" << std::endl;
-    //    }
-    
     face_list.push_back(face);
   }
   

@@ -34,8 +34,6 @@ void IfcGeom::CgalShape::Triangulate(const IfcGeom::IteratorSettings & settings,
 //  fbefore.close();
   
   // Triangulate the shape and compute the normals
-//  std::map<cgal_vertex_descriptor_t, Kernel::Vector_3> vertex_normals;
-//  boost::associative_property_map<std::map<cgal_vertex_descriptor_t, Kernel::Vector_3>> vertex_normals_map(vertex_normals);
   std::map<cgal_face_descriptor_t, Kernel::Vector_3> face_normals;
   boost::associative_property_map<std::map<cgal_face_descriptor_t, Kernel::Vector_3>> face_normals_map(face_normals);
   cgal_shape_t s_copy(s);
@@ -73,7 +71,6 @@ void IfcGeom::CgalShape::Triangulate(const IfcGeom::IteratorSettings & settings,
     return;
   }
   
-//  CGAL::Polygon_mesh_processing::compute_normals(s, vertex_normals_map, face_normals_map);
   CGAL::Polygon_mesh_processing::compute_face_normals(s, face_normals_map);
   
   for (auto &face: faces(s)) {
