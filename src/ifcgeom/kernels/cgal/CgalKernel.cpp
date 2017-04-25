@@ -271,6 +271,13 @@ bool IfcGeom::CgalKernel::convert_openings(const IfcSchema::IfcProduct* entity, 
       fentity << original_entity_shape << std::endl;
       fentity.close();
       return false;
+    } if (!entity_shape.is_valid()) {
+      Logger::Message(Logger::LOG_ERROR, "Conversion to Nef will fail. Invalid triangulated entity:", entity->entity);
+      std::ofstream fentity;
+      fentity.open("/Users/ken/Desktop/entity.off");
+      fentity << original_entity_shape << std::endl;
+      fentity.close();
+      return false;
     } if (CGAL::Polygon_mesh_processing::does_self_intersect(entity_shape)) {
       Logger::Message(Logger::LOG_ERROR, "Conversion to Nef will fail. Self-intersecting entity:", entity->entity);
       std::ofstream fentity;
@@ -341,6 +348,17 @@ bool IfcGeom::CgalKernel::convert_openings(const IfcSchema::IfcProduct* entity, 
         return false;
       } if (!success) {
         Logger::Message(Logger::LOG_ERROR, "Triangulation of opening of entity failed:", entity->entity);
+        std::ofstream fentity;
+        fentity.open("/Users/ken/Desktop/entity.off");
+        fentity << original_entity_shape << std::endl;
+        fentity.close();
+        std::ofstream fopening;
+        fopening.open("/Users/ken/Desktop/opening.off");
+        fopening << original_opening_shape << std::endl;
+        fopening.close();
+        return false;
+      } if (!opening.is_valid()) {
+        Logger::Message(Logger::LOG_ERROR, "Conversion to Nef will fail. Invalid triangulated opening in entity:", entity->entity);
         std::ofstream fentity;
         fentity.open("/Users/ken/Desktop/entity.off");
         fentity << original_entity_shape << std::endl;
