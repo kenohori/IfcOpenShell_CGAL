@@ -20,7 +20,7 @@ void IfcGeom::CgalShape::Triangulate(const IfcGeom::IteratorSettings & settings,
   }
   
   if (!s.is_valid()) {
-    Logger::Message(Logger::LOG_ERROR, "Invalid Polyhedron_3 in object (before triangulation)");
+    Logger::Message(Logger::LOG_ERROR, "Combinatorially invalid object (before triangulation)");
     std::ofstream ferror;
     ferror.open(error_file_path);
     ferror << s << std::endl;
@@ -41,17 +41,17 @@ void IfcGeom::CgalShape::Triangulate(const IfcGeom::IteratorSettings & settings,
   try {
     success = CGAL::Polygon_mesh_processing::triangulate_faces(s);
   } catch (...) {
-    Logger::Message(Logger::LOG_ERROR, "Triangulation crashed");
+    Logger::Message(Logger::LOG_ERROR, "Triangulation of object crashed");
     std::ofstream ferror;
     ferror.open(error_file_path);
-    ferror << s << std::endl;
+    ferror << s_copy << std::endl;
     ferror.close();
     return;
   } if (!success) {
-    Logger::Message(Logger::LOG_ERROR, "Triangulation failed");
+    Logger::Message(Logger::LOG_ERROR, "Triangulation of object failed");
     std::ofstream ferror;
     ferror.open(error_file_path);
-    ferror << s << std::endl;
+    ferror << s_copy << std::endl;
     ferror.close();
     return;
   }
@@ -63,7 +63,14 @@ void IfcGeom::CgalShape::Triangulate(const IfcGeom::IteratorSettings & settings,
 //  fafter.close();
   
   if (!s.is_valid()) {
-    Logger::Message(Logger::LOG_ERROR, "Invalid Polyhedron_3 in object (after triangulation)");
+    Logger::Message(Logger::LOG_ERROR, "Combinatorially invalid object (after triangulation)");
+    std::ofstream ferror;
+    ferror.open(error_file_path);
+    ferror << s_copy << std::endl;
+    ferror.close();
+    return;
+  } if (CGAL::Polygon_mesh_processing::does_self_intersect(s)) {
+    Logger::Message(Logger::LOG_ERROR, "Self-intersecting object (after triangulation)");
     std::ofstream ferror;
     ferror.open(error_file_path);
     ferror << s_copy << std::endl;
