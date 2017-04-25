@@ -51,8 +51,12 @@ bool IfcGeom::CgalKernel::convert(const IfcSchema::IfcExtrudedAreaSolid *l, cgal
   } face_list.push_back(top_face);
   
   if (bottom_face.inner.empty()) {
-    shape = create_polyhedron(face_list);
-    if (has_position) for (auto &vertex: vertices(shape)) vertex->point() = vertex->point().transform(trsf);
+    try {
+      shape = create_polyhedron(face_list);
+    } catch (...) {
+      Logger::Message(Logger::LOG_ERROR, "Creation of Polyhedron_3 failed");
+      return false;
+    } if (has_position) for (auto &vertex: vertices(shape)) vertex->point() = vertex->point().transform(trsf);
     return true;
   }
   
@@ -176,8 +180,12 @@ bool IfcGeom::CgalKernel::convert(const IfcSchema::IfcExtrudedAreaSolidTapered* 
   } face_list.push_back(top_face);
   
   if (face1.inner.empty() || face2.inner.empty()) {
-    shape = create_polyhedron(face_list);
-    if (has_position) for (auto &vertex: vertices(shape)) vertex->point() = vertex->point().transform(trsf);
+    try {
+      shape = create_polyhedron(face_list);
+    } catch (...) {
+      Logger::Message(Logger::LOG_ERROR, "Creation of Polyhedron_3 failed");
+      return false;
+    } if (has_position) for (auto &vertex: vertices(shape)) vertex->point() = vertex->point().transform(trsf);
     return true;
   }
   
@@ -295,7 +303,13 @@ bool IfcGeom::CgalKernel::convert(const IfcSchema::IfcConnectedFaceSet* l, cgal_
     face_list.push_back(face);
   }
   
-  shape = create_polyhedron(face_list);
+  try {
+    shape = create_polyhedron(face_list);
+  } catch (...) {
+    Logger::Message(Logger::LOG_ERROR, "Creation of Polyhedron_3 failed");
+    return false;
+  }
+  
   return true;
 }
 
@@ -355,8 +369,12 @@ bool IfcGeom::CgalKernel::convert(const IfcSchema::IfcBlock* l, cgal_shape_t& sh
   cgal_placement_t trsf;
   IfcGeom::CgalKernel::convert(l->Position(),trsf);
 
-  shape = create_polyhedron(face_list);
-  for (auto &vertex: vertices(shape)) vertex->point() = vertex->point().transform(trsf);
+  try {
+    shape = create_polyhedron(face_list);
+  } catch (...) {
+    Logger::Message(Logger::LOG_ERROR, "Creation of Polyhedron_3 failed");
+    return false;
+  } for (auto &vertex: vertices(shape)) vertex->point() = vertex->point().transform(trsf);
   return true;
 }
 
@@ -715,8 +733,12 @@ bool IfcGeom::CgalKernel::convert(const IfcSchema::IfcSphere* l, cgal_shape_t& s
   cgal_placement_t trsf;
   IfcGeom::CgalKernel::convert(l->Position(),trsf);
   
-  shape = create_polyhedron(face_list);
-  for (auto &vertex: vertices(shape)) {
+  try {
+    shape = create_polyhedron(face_list);
+  } catch (...) {
+    Logger::Message(Logger::LOG_ERROR, "Creation of Polyhedron_3 failed");
+    return false;
+  } for (auto &vertex: vertices(shape)) {
     vertex->point() = Kernel::Point_3(r*vertex->point().x(),
                                       r*vertex->point().y(),
                                       r*vertex->point().z());
@@ -763,8 +785,12 @@ bool IfcGeom::CgalKernel::convert(const IfcSchema::IfcRectangularPyramid* l, cga
   cgal_placement_t trsf;
   IfcGeom::CgalKernel::convert(l->Position(),trsf);
   
-  shape = create_polyhedron(face_list);
-  for (auto &vertex: vertices(shape)) vertex->point() = vertex->point().transform(trsf);
+  try {
+    shape = create_polyhedron(face_list);
+  } catch (...) {
+    Logger::Message(Logger::LOG_ERROR, "Creation of Polyhedron_3 failed");
+    return false;
+  } for (auto &vertex: vertices(shape)) vertex->point() = vertex->point().transform(trsf);
   return true;
 }
 
@@ -805,8 +831,12 @@ bool IfcGeom::CgalKernel::convert(const IfcSchema::IfcRightCircularCylinder* l, 
   cgal_placement_t trsf;
   IfcGeom::CgalKernel::convert(l->Position(),trsf);
   
-  shape = create_polyhedron(face_list);
-  for (auto &vertex: vertices(shape)) vertex->point() = vertex->point().transform(trsf);
+  try {
+    shape = create_polyhedron(face_list);
+  } catch (...) {
+    Logger::Message(Logger::LOG_ERROR, "Creation of Polyhedron_3 failed");
+    return false;
+  } for (auto &vertex: vertices(shape)) vertex->point() = vertex->point().transform(trsf);
   return true;
 }
 
@@ -839,8 +869,12 @@ bool IfcGeom::CgalKernel::convert(const IfcSchema::IfcRightCircularCone* l, cgal
   cgal_placement_t trsf;
   IfcGeom::CgalKernel::convert(l->Position(),trsf);
   
-  shape = create_polyhedron(face_list);
-  for (auto &vertex: vertices(shape)) vertex->point() = vertex->point().transform(trsf);
+  try {
+    shape = create_polyhedron(face_list);
+  } catch (...) {
+    Logger::Message(Logger::LOG_ERROR, "Creation of Polyhedron_3 failed");
+    return false;
+  } for (auto &vertex: vertices(shape)) vertex->point() = vertex->point().transform(trsf);
   return true;
 }
 
@@ -890,7 +924,13 @@ bool IfcGeom::CgalKernel::convert(const IfcSchema::IfcTriangulatedFaceSet* l, cg
     face_list.back().outer.push_back(c);
   }
   
-  shape = create_polyhedron(face_list);
+  try {
+    shape = create_polyhedron(face_list);
+  } catch (...) {
+    Logger::Message(Logger::LOG_ERROR, "Creation of Polyhedron_3 failed");
+    return false;
+  }
+  
   return true;
 }
 #endif
