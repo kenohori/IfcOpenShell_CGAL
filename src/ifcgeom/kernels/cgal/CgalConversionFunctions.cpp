@@ -52,7 +52,7 @@ CGAL::Polyhedron_3<Kernel> IfcGeom::CgalKernel::create_polyhedron(CGAL::Nef_poly
       return polyhedron;
     } catch (...) {
       Logger::Message(Logger::LOG_ERROR, "Conversion from Nef to polyhedron failed!");
-      return CGAL::Polyhedron_3<Kernel>();
+      throw 10;
     }
   } else {
     Logger::Message(Logger::LOG_ERROR, "Nef polyhedron not simple: cannot create polyhedron!");
@@ -68,7 +68,7 @@ CGAL::Nef_polyhedron_3<Kernel> IfcGeom::CgalKernel::create_nef_polyhedron(std::l
     nef_polyhedron = CGAL::Nef_polyhedron_3<Kernel>(polyhedron);
   } catch (...) {
     Logger::Message(Logger::LOG_ERROR, "Conversion to Nef polyhedron failed!");
-    return nef_polyhedron;
+    throw 10;
   } return nef_polyhedron;
 }
 
@@ -80,7 +80,7 @@ CGAL::Nef_polyhedron_3<Kernel> IfcGeom::CgalKernel::create_nef_polyhedron(CGAL::
       nef_polyhedron = CGAL::Nef_polyhedron_3<Kernel>(polyhedron);
     } catch (...) {
       Logger::Message(Logger::LOG_ERROR, "Conversion to Nef polyhedron failed!");
-      return nef_polyhedron;
+      throw 10;
     } return nef_polyhedron;
   } else {
     Logger::Message(Logger::LOG_ERROR, "Polyhedron not valid: cannot create Nef polyhedron!");

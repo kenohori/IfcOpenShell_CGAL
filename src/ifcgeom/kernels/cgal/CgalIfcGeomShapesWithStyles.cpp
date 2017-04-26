@@ -88,7 +88,13 @@ bool IfcGeom::CgalKernel::convert(const IfcSchema::IfcManifoldSolidBrep* l, Conv
       }
     }
     
-    s = create_polyhedron(nef_s);
+    try {
+      s = create_polyhedron(nef_s);
+    } catch (...) {
+      Logger::Message(Logger::LOG_ERROR, "Creation of Nef_polyhedron_3 failed");
+      return false;
+    }
+    
     shape.push_back(ConversionResult(new CgalShape(s), indiv_style ? indiv_style : collective_style));
     return true;
   }
